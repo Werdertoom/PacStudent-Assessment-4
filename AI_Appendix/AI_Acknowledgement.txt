@@ -1,0 +1,11 @@
+Microsoft Copilot and ChatGPT were used for:
+
+-Clarifying assessment requirements
+-Understanding certain Unity concepts
+-Discussing tweening and the approach to movement
+-Debugging and troubleshooting
+-Project planning and advice on workflow
+-Advice on how to review progress against marking criteria
+
+All submitted code and scripts were written and implemented by me.
+Week 7's lab was used as the foundation for the tweening system.
