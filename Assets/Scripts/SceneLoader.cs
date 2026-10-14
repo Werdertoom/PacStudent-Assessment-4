@@ -12,6 +12,11 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.LoadScene("GameScene");
     }
+
+    public void LoadStartScene()
+    {
+        SceneManager.LoadScene("StartScene");
+    }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
