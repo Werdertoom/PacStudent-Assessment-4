@@ -6,9 +6,9 @@ public class PacStudentController : MonoBehaviour
     private Tweener tweener;
     private float speed = 5.0f;
     private AudioSource audiosource;
-    private float tileSpacingX = 0.263f;
+    private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
-    public int[,] levelMap =
+    public int[,] quadrantMap =
     {
         {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
         {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
@@ -26,10 +26,77 @@ public class PacStudentController : MonoBehaviour
         {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
         {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
     };
+
+    private int[,] levelMap = new int[29, 28];
+
+    void MapBuild()
+    {
+        for (int r = 0; r < 15; r++)
+        {
+            for (int c = 0; c < 14; c++)
+            {
+                int tile = quadrantMap[r, c];
+                levelMap[r, c] = tile;
+                levelMap[r,27 - c] = tile;
+                levelMap[28 -r ,c] = tile;
+                levelMap[28 - r, 27 - c] = tile;
+                
+            }
+        }
+    }
+        
     private Vector3 currentInput;
 
     private Vector3 lastInput;
-    
+
+    bool IsWalkable(int row, int column)
+    {
+        int tile = levelMap[row, column];
+        if (tile == 1 || tile == 2 || tile == 3 || tile == 4 || tile == 7 || tile == 8)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private int row = 1;
+    private int column = 1;
+    bool canWalk(Vector3 direction)
+    {
+        if (direction == Vector3.zero)
+        {
+            return false;
+        }
+        int nextrow = row;
+        int nextcolumn = column;
+        if (direction == Vector3.up)
+        {
+            nextrow = row - 1;
+        }
+        if (direction == Vector3.down)
+        {
+            nextrow = row + 1;
+        }
+        if (direction == Vector3.right)
+        {
+            nextcolumn = column + 1;
+        }
+
+        if (direction == Vector3.left)
+        {
+            nextcolumn = column - 1;
+        }
+        if (nextrow < 0 || nextrow >= 29)
+        {
+            return false;
+        }
+
+        if (nextcolumn < 0 || nextcolumn >= 28)
+        {
+            return false;
+        }
+        return IsWalkable(nextrow, nextcolumn);
+    }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,7 +104,8 @@ public class PacStudentController : MonoBehaviour
         tweener = GetComponent<Tweener>();
         animator =  GetComponent<Animator>();
         audiosource = GetComponent<AudioSource>();
-        currentInput = Vector3.right;
+        currentInput = Vector3.zero;
+        MapBuild();
     }
 
     // Update is called once per frame
@@ -60,18 +128,32 @@ public class PacStudentController : MonoBehaviour
             lastInput = Vector3.right;
         }
         
-        if (!tweener.TweenExists(transform) && lastInput != Vector3.zero)
+        if (!tweener.TweenExists(transform))
         {
+            
+            
+            if (canWalk(lastInput))
+            {
+                currentInput = lastInput;
+            }
+            else if (!canWalk(currentInput))
+            {
+                return;
+            }
             Vector3 currentPosition = transform.position;
             Vector3 targetPos =  currentPosition + new Vector3(
-                         lastInput.x * tileSpacingX,
-                         lastInput.y * tileSpacingY,
+                         currentInput.x * tileSpacingX,
+                         currentInput.y * tileSpacingY,
                          0
                          );
             float duration = 1f / speed;
             
             
             tweener.AddTween(transform, transform.position, targetPos, duration);
+            row -= (int)currentInput.y;
+            column += (int)currentInput.x;
+            //Debug.Log($"Row: {row}, Column: {column}");
+            // Debug.Log($"Input: {currentInput}, Row: {row}, Column: {column}");
         }
 
         
