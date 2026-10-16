@@ -110,53 +110,65 @@ public class PacStudentController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.W))
         {
-            lastInput = Vector3.up;
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            lastInput = Vector3.down;
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            lastInput = Vector3.left;
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            lastInput = Vector3.right;
-        }
-        
-        if (!tweener.TweenExists(transform))
-        {
-            
-            
-            if (canWalk(lastInput))
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                currentInput = lastInput;
+                lastInput = Vector3.up;
             }
-            else if (!canWalk(currentInput))
+            if (Input.GetKeyDown(KeyCode.S))
             {
-                return;
+                lastInput = Vector3.down;
             }
-            Vector3 currentPosition = transform.position;
-            Vector3 targetPos =  currentPosition + new Vector3(
-                         currentInput.x * tileSpacingX,
-                         currentInput.y * tileSpacingY,
-                         0
-                         );
-            float duration = 1f / speed;
-            
-            
-            tweener.AddTween(transform, transform.position, targetPos, duration);
-            row -= (int)currentInput.y;
-            column += (int)currentInput.x;
-            //Debug.Log($"Row: {row}, Column: {column}");
-            // Debug.Log($"Input: {currentInput}, Row: {row}, Column: {column}");
-        }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                lastInput = Vector3.left;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                lastInput = Vector3.right;
+            }
 
-        
-    }
+            if (!tweener.TweenExists(transform))
+            {
+                if (canWalk(lastInput))
+                {
+                    currentInput = lastInput;
+                }
+                else if (!canWalk(currentInput))
+                {
+                    animator.SetBool("IsMoving", false);
+                    return;
+                }
+                Vector3 currentPosition = transform.position;
+                Vector3 targetPos = currentPosition + new Vector3(
+                    currentInput.x * tileSpacingX,
+                    currentInput.y * tileSpacingY,
+                    0
+                );
+                float duration = 1f / speed;
+
+                tweener.AddTween(transform, transform.position, targetPos, duration);
+                row -= (int)currentInput.y;
+                column += (int)currentInput.x;
+                
+                if (currentInput == Vector3.up)
+                {
+                    animator.SetInteger("Direction", 1);
+                }
+                if (currentInput == Vector3.right)
+                {
+                    animator.SetInteger("Direction", 0);
+                }
+                if (currentInput == Vector3.left)
+                {
+                    animator.SetInteger("Direction", 2);
+                }
+                if (currentInput == Vector3.down)
+                {
+                    animator.SetInteger("Direction", 3);
+                }
+            }
+            animator.SetBool("IsMoving", tweener.TweenExists(transform));
+        }
     
 }
