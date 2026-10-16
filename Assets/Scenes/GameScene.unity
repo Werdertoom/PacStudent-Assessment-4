@@ -25968,7 +25968,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1103258119}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3da502bb84fe8c84998ee2069a03f217, type: 3}
   m_Name: 
@@ -26092,6 +26092,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1103258131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103258119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e5e11e3b3eb8e4293de347a10e4b79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PacStudentController
 --- !u!1001 &1103705147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48814,6 +48826,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2935296634926261574, guid: b668ab9a84988094e91b7592acdbc4f9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1103258128}
+    - targetCorrespondingSourceObject: {fileID: 2935296634926261574, guid: b668ab9a84988094e91b7592acdbc4f9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1103258131}
   m_SourcePrefab: {fileID: 100100000, guid: b668ab9a84988094e91b7592acdbc4f9, type: 3}
 --- !u!1001 &4159155267208775353
 PrefabInstance:

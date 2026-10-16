@@ -40,7 +40,7 @@ public class PacStudentController : MonoBehaviour
             lastInput = Vector3.right;
         }
         
-        if (!tweener.TweenExists(transform))
+        if (!tweener.TweenExists(transform) && lastInput != Vector3.zero)
         {
             Vector3 currentPosition = transform.position;
             Vector3 targetPos =  currentPosition + new Vector3(
@@ -48,7 +48,7 @@ public class PacStudentController : MonoBehaviour
                          lastInput.y * tileSpacingY,
                          0
                          );
-            float duration = Vector3.Distance(transform.position, targetPos) / speed;
+            float duration = 1f / speed;
             
             
             tweener.AddTween(transform, transform.position, targetPos, duration);
