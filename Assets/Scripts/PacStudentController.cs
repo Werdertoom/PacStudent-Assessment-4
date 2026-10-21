@@ -1,0 +1,206 @@
+using UnityEngine;
+
+public class PacStudentController : MonoBehaviour
+{
+    private Animator animator;
+    private Tweener tweener;
+    private float speed = 5.0f;
+    [SerializeField] private AudioClip eatingAudio;
+    [SerializeField] private AudioClip walkingAudio;
+    private AudioSource audiosource;
+    private AudioClip currentAudioClip;
+    private float tileSpacingX = 0.3f;
+    private float tileSpacingY = 0.3f;
+    public ParticleSystem dustParticles;
+
+    public int[,] quadrantMap =
+    {
+        { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 7 },
+        { 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+        { 2, 5, 3, 4, 4, 3, 5, 3, 4, 4, 4, 3, 5, 4 },
+        { 2, 6, 4, 0, 0, 4, 5, 4, 0, 0, 0, 4, 5, 4 },
+        { 2, 5, 3, 4, 4, 3, 5, 3, 4, 4, 4, 3, 5, 3 },
+        { 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+        { 2, 5, 3, 4, 4, 3, 5, 3, 3, 5, 3, 4, 4, 4 },
+        { 2, 5, 3, 4, 4, 3, 5, 4, 4, 5, 3, 4, 4, 3 },
+        { 2, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 4 },
+        { 1, 2, 2, 2, 2, 1, 5, 4, 3, 4, 4, 3, 0, 4 },
+        { 0, 0, 0, 0, 0, 2, 5, 4, 3, 4, 4, 3, 0, 3 },
+        { 0, 0, 0, 0, 0, 2, 5, 4, 4, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 2, 5, 4, 4, 0, 3, 4, 4, 8 },
+        { 2, 2, 2, 2, 2, 1, 5, 3, 3, 0, 4, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 4, 0, 0, 0 },
+    };
+
+    private int[,] levelMap = new int[29, 28];
+
+    void MapBuild()
+    {
+        for (int r = 0; r < 15; r++)
+        {
+            for (int c = 0; c < 14; c++)
+            {
+                int tile = quadrantMap[r, c];
+                levelMap[r, c] = tile;
+                levelMap[r, 27 - c] = tile;
+                levelMap[28 - r, c] = tile;
+                levelMap[28 - r, 27 - c] = tile;
+
+            }
+        }
+    }
+
+    private Vector3 currentInput;
+
+    private Vector3 lastInput;
+
+    bool IsWalkable(int row, int column)
+    {
+        int tile = levelMap[row, column];
+        if (tile == 1 || tile == 2 || tile == 3 || tile == 4 || tile == 7 || tile == 8)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private int row = 1;
+    private int column = 1;
+
+    void PlayStepSound()
+    {
+        int tile = levelMap[row, column];
+        AudioClip clip;
+        if (tile == 5 || tile == 6)
+        {
+            clip = eatingAudio;
+        }
+        else
+        {
+            clip = walkingAudio;
+        }
+
+        audiosource.clip = clip;
+        audiosource.Play();
+
+    }
+    bool canWalk(Vector3 direction)
+    {
+        if (direction == Vector3.zero)
+        {
+            return false;
+        }
+        int nextrow = row;
+        int nextcolumn = column;
+        if (direction == Vector3.up)
+        {
+            nextrow = row - 1;
+        }
+        if (direction == Vector3.down)
+        {
+            nextrow = row + 1;
+        }
+        if (direction == Vector3.right)
+        {
+            nextcolumn = column + 1;
+        }
+
+        if (direction == Vector3.left)
+        {
+            nextcolumn = column - 1;
+        }
+        if (nextrow < 0 || nextrow >= 29)
+        {
+            return false;
+        }
+
+        if (nextcolumn < 0 || nextcolumn >= 28)
+        {
+            return false;
+        }
+        return IsWalkable(nextrow, nextcolumn);
+    }
+    
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        tweener = GetComponent<Tweener>();
+        animator =  GetComponent<Animator>();
+        audiosource = GetComponent<AudioSource>();
+        audiosource.playOnAwake = false;
+        currentInput = Vector3.zero;
+        MapBuild();
+    }
+
+    // Update is called once per frame
+    void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                lastInput = Vector3.up;
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                lastInput = Vector3.down;
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                lastInput = Vector3.left;
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                lastInput = Vector3.right;
+            }
+
+            if (!tweener.TweenExists(transform))
+            {
+                if (canWalk(lastInput))
+                {
+                    currentInput = lastInput;
+                }
+                else if (!canWalk(currentInput))
+                {
+                    animator.SetBool("IsMoving", false);
+                    audiosource.Stop();
+                    dustParticles.Stop();
+                    return;
+                }
+                Vector3 currentPosition = transform.position;
+                Vector3 targetPos = currentPosition + new Vector3(
+                    currentInput.x * tileSpacingX,
+                    currentInput.y * tileSpacingY,
+                    0
+                );
+                float duration = 1f / speed;
+
+                tweener.AddTween(transform, transform.position, targetPos, duration);
+                row -= (int)currentInput.y;
+                column += (int)currentInput.x;
+                PlayStepSound();
+                if (!dustParticles.isPlaying)
+                {
+                    dustParticles.Play();
+                }
+                if (currentInput == Vector3.up)
+                {
+                    animator.SetInteger("Direction", 1);
+                }
+                if (currentInput == Vector3.right)
+                {
+                    animator.SetInteger("Direction", 0);
+                }
+                if (currentInput == Vector3.left)
+                {
+                    animator.SetInteger("Direction", 2);
+                }
+                if (currentInput == Vector3.down)
+                {
+                    animator.SetInteger("Direction", 3);
+                }
+            }
+            animator.SetBool("IsMoving", tweener.TweenExists(transform));
+            
+        }
+    
+}
