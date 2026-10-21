@@ -11,6 +11,7 @@ public class PacStudentController : MonoBehaviour
     private AudioClip currentAudioClip;
     private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
+    public ParticleSystem dustParticles;
 
     public int[,] quadrantMap =
     {
@@ -162,6 +163,7 @@ public class PacStudentController : MonoBehaviour
                 {
                     animator.SetBool("IsMoving", false);
                     audiosource.Stop();
+                    dustParticles.Stop();
                     return;
                 }
                 Vector3 currentPosition = transform.position;
@@ -176,6 +178,10 @@ public class PacStudentController : MonoBehaviour
                 row -= (int)currentInput.y;
                 column += (int)currentInput.x;
                 PlayStepSound();
+                if (!dustParticles.isPlaying)
+                {
+                    dustParticles.Play();
+                }
                 if (currentInput == Vector3.up)
                 {
                     animator.SetInteger("Direction", 1);
