@@ -11,23 +11,24 @@ public class PacStudentController : MonoBehaviour
     private AudioClip currentAudioClip;
     private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
+
     public int[,] quadrantMap =
     {
-        {1,2,2,2,2,2,2,2,2,2,2,2,2,7},
-        {2,5,5,5,5,5,5,5,5,5,5,5,5,4},
-        {2,5,3,4,4,3,5,3,4,4,4,3,5,4},
-        {2,6,4,0,0,4,5,4,0,0,0,4,5,4},
-        {2,5,3,4,4,3,5,3,4,4,4,3,5,3},
-        {2,5,5,5,5,5,5,5,5,5,5,5,5,5},
-        {2,5,3,4,4,3,5,3,3,5,3,4,4,4},
-        {2,5,3,4,4,3,5,4,4,5,3,4,4,3},
-        {2,5,5,5,5,5,5,4,4,5,5,5,5,4},
-        {1,2,2,2,2,1,5,4,3,4,4,3,0,4},
-        {0,0,0,0,0,2,5,4,3,4,4,3,0,3},
-        {0,0,0,0,0,2,5,4,4,0,0,0,0,0},
-        {0,0,0,0,0,2,5,4,4,0,3,4,4,8},
-        {2,2,2,2,2,1,5,3,3,0,4,0,0,0},
-        {0,0,0,0,0,0,5,0,0,0,4,0,0,0},
+        { 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 7 },
+        { 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4 },
+        { 2, 5, 3, 4, 4, 3, 5, 3, 4, 4, 4, 3, 5, 4 },
+        { 2, 6, 4, 0, 0, 4, 5, 4, 0, 0, 0, 4, 5, 4 },
+        { 2, 5, 3, 4, 4, 3, 5, 3, 4, 4, 4, 3, 5, 3 },
+        { 2, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 },
+        { 2, 5, 3, 4, 4, 3, 5, 3, 3, 5, 3, 4, 4, 4 },
+        { 2, 5, 3, 4, 4, 3, 5, 4, 4, 5, 3, 4, 4, 3 },
+        { 2, 5, 5, 5, 5, 5, 5, 4, 4, 5, 5, 5, 5, 4 },
+        { 1, 2, 2, 2, 2, 1, 5, 4, 3, 4, 4, 3, 0, 4 },
+        { 0, 0, 0, 0, 0, 2, 5, 4, 3, 4, 4, 3, 0, 3 },
+        { 0, 0, 0, 0, 0, 2, 5, 4, 4, 0, 0, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 2, 5, 4, 4, 0, 3, 4, 4, 8 },
+        { 2, 2, 2, 2, 2, 1, 5, 3, 3, 0, 4, 0, 0, 0 },
+        { 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 4, 0, 0, 0 },
     };
 
     private int[,] levelMap = new int[29, 28];
@@ -40,14 +41,14 @@ public class PacStudentController : MonoBehaviour
             {
                 int tile = quadrantMap[r, c];
                 levelMap[r, c] = tile;
-                levelMap[r,27 - c] = tile;
-                levelMap[28 -r ,c] = tile;
+                levelMap[r, 27 - c] = tile;
+                levelMap[28 - r, c] = tile;
                 levelMap[28 - r, 27 - c] = tile;
-                
+
             }
         }
     }
-        
+
     private Vector3 currentInput;
 
     private Vector3 lastInput;
@@ -59,11 +60,30 @@ public class PacStudentController : MonoBehaviour
         {
             return false;
         }
+
         return true;
     }
 
     private int row = 1;
     private int column = 1;
+
+    void PlayStepSound()
+    {
+        int tile = levelMap[row, column];
+        AudioClip clip;
+        if (tile == 5 || tile == 6)
+        {
+            clip = eatingAudio;
+        }
+        else
+        {
+            clip = walkingAudio;
+        }
+
+        audiosource.clip = clip;
+        audiosource.Play();
+
+    }
     bool canWalk(Vector3 direction)
     {
         if (direction == Vector3.zero)
@@ -141,6 +161,7 @@ public class PacStudentController : MonoBehaviour
                 else if (!canWalk(currentInput))
                 {
                     animator.SetBool("IsMoving", false);
+                    audiosource.Stop();
                     return;
                 }
                 Vector3 currentPosition = transform.position;
@@ -154,7 +175,7 @@ public class PacStudentController : MonoBehaviour
                 tweener.AddTween(transform, transform.position, targetPos, duration);
                 row -= (int)currentInput.y;
                 column += (int)currentInput.x;
-                
+                PlayStepSound();
                 if (currentInput == Vector3.up)
                 {
                     animator.SetInteger("Direction", 1);
@@ -173,6 +194,7 @@ public class PacStudentController : MonoBehaviour
                 }
             }
             animator.SetBool("IsMoving", tweener.TweenExists(transform));
+            
         }
     
 }
