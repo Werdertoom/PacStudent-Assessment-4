@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PacStudentController : MonoBehaviour
 {
@@ -12,6 +14,8 @@ public class PacStudentController : MonoBehaviour
     private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
     public ParticleSystem dustParticles;
+    private int score = 0;
+    public TMP_Text scoreText;
 
     public int[,] quadrantMap =
     {
@@ -50,6 +54,22 @@ public class PacStudentController : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Pellet"))
+            {
+                score += 10;
+                scoreText.text = score.ToString("D6");
+                Destroy(other.gameObject);
+        }
+
+        if (other.CompareTag("PowerPellet"))
+        {
+            score += 50;
+            scoreText.text = score.ToString("D6");
+            Destroy(other.gameObject);
+        }
+    }
     private Vector3 currentInput;
 
     private Vector3 lastInput;
