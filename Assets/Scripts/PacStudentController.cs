@@ -5,7 +5,10 @@ public class PacStudentController : MonoBehaviour
     private Animator animator;
     private Tweener tweener;
     private float speed = 5.0f;
+    [SerializeField] private AudioClip eatingAudio;
+    [SerializeField] private AudioClip walkingAudio;
     private AudioSource audiosource;
+    private AudioClip currentAudioClip;
     private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
     public int[,] quadrantMap =
@@ -104,6 +107,7 @@ public class PacStudentController : MonoBehaviour
         tweener = GetComponent<Tweener>();
         animator =  GetComponent<Animator>();
         audiosource = GetComponent<AudioSource>();
+        audiosource.playOnAwake = false;
         currentInput = Vector3.zero;
         MapBuild();
     }
