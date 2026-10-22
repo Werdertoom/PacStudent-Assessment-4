@@ -5389,6 +5389,37 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.025, y: 0}
   m_Radius: 0.05
+--- !u!1 &626477670
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 626477671}
+  m_Layer: 0
+  m_Name: RightTeleport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &626477671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626477670}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 8, y: -4.2, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 633034245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &627808750 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8135764326327150398, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -5521,6 +5552,39 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!1 &633034244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 633034245}
+  m_Layer: 0
+  m_Name: MiscObjects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &633034245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 633034244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 707512623}
+  - {fileID: 626477671}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &636458099 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6344439980650151763, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -6090,6 +6154,37 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: -0.025, y: 0}
   m_Radius: 0.05
+--- !u!1 &707512622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 707512623}
+  m_Layer: 0
+  m_Name: LeftTeleport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &707512623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707512622}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -4.2, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 633034245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &717217452
 GameObject:
   m_ObjectHideFlags: 0
@@ -14613,8 +14708,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PacStudentController
   eatingAudio: {fileID: 8300000, guid: 9ff55e45370df3640a2c8685839264fc, type: 3}
   walkingAudio: {fileID: 8300000, guid: 759bb4eb004342149b309f0bcdc5b1f6, type: 3}
+  cherryAudio: {fileID: 8300000, guid: af0218fbada38b147a165b78e7693f99, type: 3}
   dustParticles: {fileID: 885388422}
   scoreText: {fileID: 2126687355}
+  leftTeleport: {fileID: 707512623}
+  rightTeleport: {fileID: 626477671}
 --- !u!4 &1103258133 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8442688589374775626, guid: b668ab9a84988094e91b7592acdbc4f9, type: 3}
@@ -22192,3 +22290,4 @@ SceneRoots:
   - {fileID: 218776545}
   - {fileID: 353376703}
   - {fileID: 2062975998}
+  - {fileID: 633034245}

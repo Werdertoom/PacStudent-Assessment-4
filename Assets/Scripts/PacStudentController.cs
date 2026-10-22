@@ -1,4 +1,4 @@
-using TMPro;
+        using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,11 +11,14 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private AudioClip walkingAudio;
     private AudioSource audiosource;
     private AudioClip currentAudioClip;
+    public AudioClip cherryAudio;
     private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
     public ParticleSystem dustParticles;
     private int score = 0;
     public TMP_Text scoreText;
+    public Transform leftTeleport;
+    public Transform rightTeleport;
 
     public int[,] quadrantMap =
     {
@@ -53,6 +56,7 @@ public class PacStudentController : MonoBehaviour
             }
         }
     }
+    
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -67,6 +71,14 @@ public class PacStudentController : MonoBehaviour
         {
             score += 50;
             scoreText.text = score.ToString("D6");
+            Destroy(other.gameObject);
+        }
+
+        if (other.CompareTag("Cherry"))
+        {
+            score += 100;
+            scoreText.text = score.ToString("D6");
+            audiosource.PlayOneShot(cherryAudio);
             Destroy(other.gameObject);
         }
     }
@@ -175,6 +187,19 @@ public class PacStudentController : MonoBehaviour
 
             if (!tweener.TweenExists(transform))
             {
+                if (row == 14 && column == 0)
+                {
+                    transform.position = rightTeleport.position;
+                    column = 27;
+                    currentInput = Vector3.left;
+                }
+                else if (row == 14 && column == 27)
+                {
+                    transform.position = leftTeleport.position;
+                    column = 0;
+                    currentInput = Vector3.right;
+                }
+                    
                 if (canWalk(lastInput))
                 {
                     currentInput = lastInput;
