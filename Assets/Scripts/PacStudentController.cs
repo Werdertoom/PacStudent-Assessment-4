@@ -15,10 +15,13 @@ public class PacStudentController : MonoBehaviour
     private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
     public ParticleSystem dustParticles;
+    public ParticleSystem wallParticles;
     private int score = 0;
     public TMP_Text scoreText;
     public Transform leftTeleport;
     public Transform rightTeleport;
+    public bool hitWall = false;
+    public AudioClip wallAudio;
 
     public int[,] quadrantMap =
     {
@@ -207,8 +210,17 @@ public class PacStudentController : MonoBehaviour
                 else if (!canWalk(currentInput))
                 {
                     animator.SetBool("IsMoving", false);
-                    audiosource.Stop();
+                    
                     dustParticles.Stop();
+                    
+                    if (!hitWall && currentInput != Vector3.zero)
+                    {
+                        hitWall = true;
+                        audiosource.Stop();
+                        wallParticles.Play();
+                        audiosource.PlayOneShot(wallAudio);
+                    }
+
                     return;
                 }
                 Vector3 currentPosition = transform.position;
@@ -223,6 +235,7 @@ public class PacStudentController : MonoBehaviour
                 row -= (int)currentInput.y;
                 column += (int)currentInput.x;
                 PlayStepSound();
+                hitWall = false;
                 if (!dustParticles.isPlaying)
                 {
                     dustParticles.Play();
