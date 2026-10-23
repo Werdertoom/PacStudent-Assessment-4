@@ -1,4 +1,7 @@
+        using System.Collections;
+        using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PacStudentController : MonoBehaviour
 {
@@ -9,9 +12,27 @@ public class PacStudentController : MonoBehaviour
     [SerializeField] private AudioClip walkingAudio;
     private AudioSource audiosource;
     private AudioClip currentAudioClip;
+    public AudioClip cherryAudio;
     private float tileSpacingX = 0.3f;
     private float tileSpacingY = 0.3f;
     public ParticleSystem dustParticles;
+    public ParticleSystem wallParticles;
+    private int score = 0;
+    public TMP_Text scoreText;
+    public Transform leftTeleport;
+    public Transform rightTeleport;
+    public bool hitWall = false;
+    public AudioClip wallAudio;
+    public GameObject[] lifeIndicator;
+    public AudioClip deathClip;
+    public ParticleSystem deathParticles;
+    private int lives = 3;
+    private bool isDead = false;
+    private Vector3 initialPosition;
+    public RoundManager roundManager;
+    private int pelletsLeft;
+    public GhostManagers ghostManager;
+    public AudioClip ghostEatClip;
 
     public int[,] quadrantMap =
     {
@@ -50,6 +71,93 @@ public class PacStudentController : MonoBehaviour
         }
     }
 
+    IEnumerator Die()
+    {
+        isDead = true;
+        audiosource.Stop();
+        dustParticles.Stop();
+        lives--;
+        if (lives >= 0 && lives < lifeIndicator.Length)
+        {
+            lifeIndicator[lives].SetActive(false);
+        }
+        deathParticles.Play();
+        audiosource.PlayOneShot(deathClip);
+        animator.SetBool("Dead", true);
+        yield return new WaitForSeconds(1.5f);
+        if (lives <= 0)
+        {
+            roundManager.GameOver(score);
+            yield break;
+        }
+        transform.position = initialPosition;
+        row = 1;
+        column = 1;
+        currentInput = Vector3.zero;
+        lastInput = Vector3.zero;
+        animator.SetBool("Dead", false);
+        animator.SetInteger("Direction", 0);
+        animator.SetBool("Ismoving", false);
+        isDead = false;
+        ghostManager.ResetAll();
+    }
+    
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!RoundManager.gameRunning)
+        {
+            return;
+        }
+        if (other.CompareTag("Pellet"))
+            {
+                score += 10;
+                scoreText.text = score.ToString("D6");
+                Destroy(other.gameObject);
+                pelletsLeft--;
+                if (pelletsLeft <= 0)
+                {
+                    roundManager.GameOver(score);
+                }
+            }
+
+        if (other.CompareTag("PowerPellet"))
+        {
+            score += 50;
+            scoreText.text = score.ToString("D6");
+            ghostManager.StartScared(); 
+            Destroy(other.gameObject);
+            pelletsLeft--;
+            if (pelletsLeft <= 0)
+            {
+                roundManager.GameOver(score);
+            }
+        }
+
+        if (other.CompareTag("Cherry"))
+        {
+            score += 100;
+            scoreText.text = score.ToString("D6");
+            audiosource.PlayOneShot(cherryAudio);
+            Destroy(other.gameObject);
+        }
+
+        if (other.CompareTag("Ghost") && !isDead)
+        {
+            Ghosts ghost = other.GetComponent<Ghosts>();
+            if (ghost.state == "Normal")
+            {
+                StartCoroutine(Die());
+            }
+            else if (ghost.state != "dead")
+            {
+                score += 300;
+                scoreText.text = score.ToString("D6");
+                audiosource.PlayOneShot(ghostEatClip);
+                ghost.Eaten();
+            }
+            
+        }
+    }
     private Vector3 currentInput;
 
     private Vector3 lastInput;
@@ -130,12 +238,25 @@ public class PacStudentController : MonoBehaviour
         audiosource = GetComponent<AudioSource>();
         audiosource.playOnAwake = false;
         currentInput = Vector3.zero;
+        animator.SetInteger("Direction", 0);
         MapBuild();
+        initialPosition = transform.position;
+        pelletsLeft = GameObject.FindGameObjectsWithTag("Pellet").Length +
+                      GameObject.FindGameObjectsWithTag("PowerPellet").Length;
     }
 
     // Update is called once per frame
     void Update()
         {
+            if (!RoundManager.gameRunning)
+            {
+                return;
+            }
+
+            if (isDead)
+            {
+                return;
+            }
             if (Input.GetKeyDown(KeyCode.W))
             {
                 lastInput = Vector3.up;
@@ -155,6 +276,19 @@ public class PacStudentController : MonoBehaviour
 
             if (!tweener.TweenExists(transform))
             {
+                if (row == 14 && column == 0)
+                {
+                    transform.position = rightTeleport.position;
+                    column = 27;
+                    currentInput = Vector3.left;
+                }
+                else if (row == 14 && column == 27)
+                {
+                    transform.position = leftTeleport.position;
+                    column = 0;
+                    currentInput = Vector3.right;
+                }
+                    
                 if (canWalk(lastInput))
                 {
                     currentInput = lastInput;
@@ -162,8 +296,17 @@ public class PacStudentController : MonoBehaviour
                 else if (!canWalk(currentInput))
                 {
                     animator.SetBool("IsMoving", false);
-                    audiosource.Stop();
+                    
                     dustParticles.Stop();
+                    
+                    if (!hitWall && currentInput != Vector3.zero)
+                    {
+                        hitWall = true;
+                        audiosource.Stop();
+                        wallParticles.Play();
+                        audiosource.PlayOneShot(wallAudio);
+                    }
+
                     return;
                 }
                 Vector3 currentPosition = transform.position;
@@ -178,6 +321,7 @@ public class PacStudentController : MonoBehaviour
                 row -= (int)currentInput.y;
                 column += (int)currentInput.x;
                 PlayStepSound();
+                hitWall = false;
                 if (!dustParticles.isPlaying)
                 {
                     dustParticles.Play();

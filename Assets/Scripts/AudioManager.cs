@@ -3,7 +3,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public AudioSource Intro;
-    public AudioSource Ghost_Normal;
+    public AudioSource ghostNormal;
    
 
     public float duration = 3.0f;
@@ -11,18 +11,16 @@ public class AudioManager : MonoBehaviour
     public void introMusic()
        {
            Intro.Play();
-           Invoke("StopAudio", duration);
        }
-    private void StopAudio()
+    public void normalMusic()
     {
-        if (Intro.isPlaying)
             Intro.Stop();
-        Ghost_Normal.Play();
+        ghostNormal.Play();
     }
     
     void Start()
     {
-        introMusic();
+    
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
    
