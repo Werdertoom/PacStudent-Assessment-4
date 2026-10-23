@@ -31,6 +31,7 @@ public class PacStudentController : MonoBehaviour
     private Vector3 initialPosition;
     public RoundManager roundManager;
     private int pelletsLeft;
+    public GhostManagers ghostManager;
 
     public int[,] quadrantMap =
     {
@@ -117,6 +118,7 @@ public class PacStudentController : MonoBehaviour
         {
             score += 50;
             scoreText.text = score.ToString("D6");
+            ghostManager.StartScared(); 
             Destroy(other.gameObject);
             pelletsLeft--;
             if (pelletsLeft <= 0)

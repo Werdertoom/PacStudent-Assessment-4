@@ -1419,6 +1419,7 @@ GameObject:
   - component: {fileID: 218776545}
   - component: {fileID: 218776544}
   - component: {fileID: 218776546}
+  - component: {fileID: 218776547}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1470,6 +1471,27 @@ MonoBehaviour:
   TimerText: {fileID: 944571225}
   gameOverText: {fileID: 1291001369}
   exitButton: {fileID: 1395238056}
+--- !u!114 &218776547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218776543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57b73ece11d915c458cc6785bb8452a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostManagers
+  ghosts:
+  - {fileID: 1464766433}
+  - {fileID: 622232022}
+  - {fileID: 1432981682}
+  - {fileID: 1526246721}
+  scaredTimer: {fileID: 1056743933}
+  musicSource: {fileID: 1103258125}
+  normalClip: {fileID: 8300000, guid: 2acdc1326e9b853498a6599acd43d1dc, type: 3}
+  scaredClip: {fileID: 8300000, guid: 4d4367198166dc74eaafc2fe29d4eb68, type: 3}
 --- !u!1 &229779465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3393353334467471832, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -4509,8 +4531,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2367672114725554599, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3645867135094122867, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
@@ -10354,6 +10375,11 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.42
+--- !u!95 &622232022 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 2367672114725554599, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
+  m_PrefabInstance: {fileID: 518357616}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &626477670
 GameObject:
   m_ObjectHideFlags: 0
@@ -18313,8 +18339,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5958939859665177170, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 9076377891529953200, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
@@ -19112,7 +19137,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1056743931}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
@@ -19700,6 +19725,7 @@ MonoBehaviour:
   deathClip: {fileID: 8300000, guid: 4ad34146a21209d44b641bdaafe349c4, type: 3}
   deathParticles: {fileID: 574954497}
   roundManager: {fileID: 218776546}
+  ghostManager: {fileID: 218776547}
 --- !u!4 &1103258133 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8442688589374775626, guid: b668ab9a84988094e91b7592acdbc4f9, type: 3}
@@ -27214,8 +27240,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 131869246466089430, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8376642988530766375, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
@@ -27267,6 +27292,11 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.42
+--- !u!95 &1432981682 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 131869246466089430, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
+  m_PrefabInstance: {fileID: 1432981677}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1434231410 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8216620567464977822, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -27498,6 +27528,11 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.42
+--- !u!95 &1464766433 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 7202875737181768710, guid: b1484b59a75583d4bb464618d3c4c629, type: 3}
+  m_PrefabInstance: {fileID: 1464766428}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1466428619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2942143130210091638, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -28049,6 +28084,11 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.42
+--- !u!95 &1526246721 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5958939859665177170, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
+  m_PrefabInstance: {fileID: 959225856}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1528516409 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2246959280864095454, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
