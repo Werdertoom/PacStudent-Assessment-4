@@ -17,6 +17,7 @@ public class CherryController : MonoBehaviour
 
     private IEnumerator CherryRoutine()
     {
+        yield  return new WaitUntil(()=> RoundManager.gameRunning);
         while (true)
         {
             yield return new WaitForSeconds(5f);

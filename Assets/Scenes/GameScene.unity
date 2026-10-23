@@ -1418,6 +1418,7 @@ GameObject:
   m_Component:
   - component: {fileID: 218776545}
   - component: {fileID: 218776544}
+  - component: {fileID: 218776546}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1452,6 +1453,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &218776546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218776543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 114997e0ebc7d104a8604c332c76ad79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoundManager
+  countdownText: {fileID: 1976145700}
+  block: {fileID: 1427744943}
+  TimerText: {fileID: 944571225}
 --- !u!1 &229779465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3393353334467471832, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -5414,7 +5430,7 @@ Transform:
   m_GameObject: {fileID: 626477670}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 8, y: -4.2, z: 0}
+  m_LocalPosition: {x: 8.1, y: -4.2, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
