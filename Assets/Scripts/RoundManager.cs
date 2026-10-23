@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class RoundManager : MonoBehaviour
 {
@@ -11,8 +13,37 @@ public class RoundManager : MonoBehaviour
     public static bool gameRunning = false;
     
     public TMP_Text TimerText;
+    public TMP_Text gameOverText;
     private float timer = 0;
+    private bool isGameover = false;
+    public Button exitButton;
 
+    IEnumerator GameOverRoutine(int finalScore)
+    {
+        gameRunning = false;
+        block.SetActive(true);
+        exitButton.interactable = false;
+        gameOverText.gameObject.SetActive(true);
+        
+        int savedScore = PlayerPrefs.GetInt("HighScore", 0);
+        float savedTime =  PlayerPrefs.GetFloat("BestTime", float.MaxValue);
+
+        if (finalScore > savedScore || (finalScore == savedScore && timer < savedTime))
+        {
+            PlayerPrefs.SetInt("HighScore", finalScore);
+            PlayerPrefs.SetFloat("BestTime", timer);
+            PlayerPrefs.Save();
+        }
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("StartScene");
+    }
+
+    public void GameOver(int finalScore)
+    {
+        if (isGameover) return;
+        isGameover = true;
+        StartCoroutine(GameOverRoutine(finalScore));
+    }
     IEnumerator Countdown()
     {
         gameRunning = false;
@@ -48,7 +79,7 @@ public class RoundManager : MonoBehaviour
         int minutes = (int)(timer / 60f);
         int seconds = (int)(timer % 60f);
         int hundredths = (int)((timer * 100f) % 100f);
-        TimerText.text = string.Format("{00:00}:{1:00}:{2:00}", minutes, seconds, hundredths);;
+        TimerText.text = string.Format("{0:00}:{1:00}:{2:00}", minutes, seconds, hundredths);
 
     }
 }

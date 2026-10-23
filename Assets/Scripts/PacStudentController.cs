@@ -1,3 +1,4 @@
+        using System.Collections;
         using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,6 +23,14 @@ public class PacStudentController : MonoBehaviour
     public Transform rightTeleport;
     public bool hitWall = false;
     public AudioClip wallAudio;
+    public GameObject[] lifeIndicator;
+    public AudioClip deathClip;
+    public ParticleSystem deathParticles;
+    private int lives = 3;
+    private bool isDead = false;
+    private Vector3 initialPosition;
+    public RoundManager roundManager;
+    private int pelletsLeft;
 
     public int[,] quadrantMap =
     {
@@ -59,8 +68,37 @@ public class PacStudentController : MonoBehaviour
             }
         }
     }
-    
 
+    IEnumerator Die()
+    {
+        isDead = true;
+        audiosource.Stop();
+        dustParticles.Stop();
+        lives--;
+        if (lives >= 0 && lives < lifeIndicator.Length)
+        {
+            lifeIndicator[lives].SetActive(false);
+        }
+        deathParticles.Play();
+        audiosource.PlayOneShot(deathClip);
+        animator.SetBool("Dead", true);
+        yield return new WaitForSeconds(1.5f);
+        if (lives <= 0)
+        {
+            roundManager.GameOver(score);
+            yield break;
+        }
+        transform.position = initialPosition;
+        row = 1;
+        column = 1;
+        currentInput = Vector3.zero;
+        lastInput = Vector3.zero;
+        animator.SetBool("Dead", false);
+        animator.SetInteger("Direction", 0);
+        animator.SetBool("Ismoving", false);
+        isDead = false;
+    }
+    
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Pellet"))
@@ -68,13 +106,23 @@ public class PacStudentController : MonoBehaviour
                 score += 10;
                 scoreText.text = score.ToString("D6");
                 Destroy(other.gameObject);
-        }
+                pelletsLeft--;
+                if (pelletsLeft <= 0)
+                {
+                    roundManager.GameOver(score);
+                }
+            }
 
         if (other.CompareTag("PowerPellet"))
         {
             score += 50;
             scoreText.text = score.ToString("D6");
             Destroy(other.gameObject);
+            pelletsLeft--;
+            if (pelletsLeft <= 0)
+            {
+                roundManager.GameOver(score);
+            }
         }
 
         if (other.CompareTag("Cherry"))
@@ -83,6 +131,11 @@ public class PacStudentController : MonoBehaviour
             scoreText.text = score.ToString("D6");
             audiosource.PlayOneShot(cherryAudio);
             Destroy(other.gameObject);
+        }
+
+        if (other.CompareTag("Ghost") && !isDead)
+        {
+            StartCoroutine(Die());
         }
     }
     private Vector3 currentInput;
@@ -165,13 +218,22 @@ public class PacStudentController : MonoBehaviour
         audiosource = GetComponent<AudioSource>();
         audiosource.playOnAwake = false;
         currentInput = Vector3.zero;
+        animator.SetInteger("Direction", 0);
         MapBuild();
+        initialPosition = transform.position;
+        pelletsLeft = GameObject.FindGameObjectsWithTag("Pellet").Length +
+                      GameObject.FindGameObjectsWithTag("PowerPellet").Length;
     }
 
     // Update is called once per frame
     void Update()
         {
             if (!RoundManager.gameRunning)
+            {
+                return;
+            }
+
+            if (isDead)
             {
                 return;
             }
