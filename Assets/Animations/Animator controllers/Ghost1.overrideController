@@ -6,14 +6,14 @@ AnimatorOverrideController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ghost_Armman
+  m_Name: Ghost1
   m_Controller: {fileID: 9100000, guid: 9f1323ad2c7e65b4f8c2e501d7820650, type: 2}
   m_Clips:
   - m_OriginalClip: {fileID: 7400000, guid: a4be89f7afed5584caf33f08285d0807, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: a4be89f7afed5584caf33f08285d0807, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: f557ff72346191a45b6ef9b77388cc62, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: f557ff72346191a45b6ef9b77388cc62, type: 2}
-  - m_OriginalClip: {fileID: 7400000, guid: 4e5beeded4d869f4184617be0287f673, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 4e5beeded4d869f4184617be0287f673, type: 2}
   - m_OriginalClip: {fileID: 7400000, guid: f0847d58c1f8c4b49bf07b60e33edbfb, type: 2}
     m_OverrideClip: {fileID: 7400000, guid: f0847d58c1f8c4b49bf07b60e33edbfb, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 4e5beeded4d869f4184617be0287f673, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4e5beeded4d869f4184617be0287f673, type: 2}

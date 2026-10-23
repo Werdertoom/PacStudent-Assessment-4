@@ -1471,6 +1471,7 @@ MonoBehaviour:
   TimerText: {fileID: 944571225}
   gameOverText: {fileID: 1291001369}
   exitButton: {fileID: 1395238056}
+  audioManager: {fileID: 1859081284}
 --- !u!114 &218776547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1484,14 +1485,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostManagers
   ghosts:
-  - {fileID: 1464766433}
-  - {fileID: 622232022}
-  - {fileID: 1432981682}
-  - {fileID: 1526246721}
+  - {fileID: 1464766434}
+  - {fileID: 622232023}
+  - {fileID: 1432981683}
+  - {fileID: 1526246722}
   scaredTimer: {fileID: 1056743933}
-  musicSource: {fileID: 1103258125}
+  musicSource: {fileID: 1859081282}
   normalClip: {fileID: 8300000, guid: 2acdc1326e9b853498a6599acd43d1dc, type: 3}
   scaredClip: {fileID: 8300000, guid: 4d4367198166dc74eaafc2fe29d4eb68, type: 3}
+  deadClip: {fileID: 8300000, guid: 52856ef7e62c4c54e872c836b552bc88, type: 3}
 --- !u!1 &229779465 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3393353334467471832, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -4483,6 +4485,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 188619158}
     m_Modifications:
+    - target: {fileID: 2367672114725554599, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 72e58e43330d92b48ac0636ce64f347b, type: 2}
     - target: {fileID: 3154628167756838249, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
       propertyPath: m_Name
       value: Chestman
@@ -4541,6 +4547,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3154628167756838249, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
       insertIndex: -1
       addedObject: {fileID: 622232020}
+    - targetCorrespondingSourceObject: {fileID: 3154628167756838249, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 622232023}
   m_SourcePrefab: {fileID: 100100000, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
 --- !u!4 &518357617 stripped
 Transform:
@@ -10380,6 +10389,21 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 2367672114725554599, guid: 2d00812f5d9565749866f98ce01fcd12, type: 3}
   m_PrefabInstance: {fileID: 518357616}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &622232023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622232018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5493cb7bf9b2a64e81c241f8aa360b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ghosts
+  animator: {fileID: 622232022}
+  state: Normal
+  manager: {fileID: 218776547}
 --- !u!1 &626477670
 GameObject:
   m_ObjectHideFlags: 0
@@ -18291,6 +18315,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 188619158}
     m_Modifications:
+    - target: {fileID: 5958939859665177170, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 30c03d2734d8c36478e85ead1b0a6a1c, type: 2}
     - target: {fileID: 8201173023353033428, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
       propertyPath: m_Name
       value: Legman
@@ -18349,6 +18377,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8201173023353033428, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1526246719}
+    - targetCorrespondingSourceObject: {fileID: 8201173023353033428, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1526246722}
   m_SourcePrefab: {fileID: 100100000, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
 --- !u!4 &959225857 stripped
 Transform:
@@ -19110,7 +19141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1056743932
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19726,6 +19757,7 @@ MonoBehaviour:
   deathParticles: {fileID: 574954497}
   roundManager: {fileID: 218776546}
   ghostManager: {fileID: 218776547}
+  ghostEatClip: {fileID: 8300000, guid: bd078426aded5ac4199cf715ce2d20da, type: 3}
 --- !u!4 &1103258133 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8442688589374775626, guid: b668ab9a84988094e91b7592acdbc4f9, type: 3}
@@ -27192,6 +27224,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 188619158}
     m_Modifications:
+    - target: {fileID: 131869246466089430, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 93d6df97132d2fe488bd4505ee398a7e, type: 2}
     - target: {fileID: 1513925608523491851, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
       propertyPath: m_Name
       value: Headman
@@ -27250,6 +27286,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1513925608523491851, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1432981680}
+    - targetCorrespondingSourceObject: {fileID: 1513925608523491851, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1432981683}
   m_SourcePrefab: {fileID: 100100000, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
 --- !u!4 &1432981678 stripped
 Transform:
@@ -27297,6 +27336,21 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 131869246466089430, guid: 44a4f75b85d20164c9de48d9cfc352b8, type: 3}
   m_PrefabInstance: {fileID: 1432981677}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1432981683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 395094829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5493cb7bf9b2a64e81c241f8aa360b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ghosts
+  animator: {fileID: 1432981682}
+  state: Normal
+  manager: {fileID: 218776547}
 --- !u!1 &1434231410 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8216620567464977822, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -27476,6 +27530,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7202875737181768710, guid: b1484b59a75583d4bb464618d3c4c629, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: fd56c79115cb25d4dba193f473e8a28f, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -27486,6 +27544,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5842763518509747266, guid: b1484b59a75583d4bb464618d3c4c629, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1464766431}
+    - targetCorrespondingSourceObject: {fileID: 5842763518509747266, guid: b1484b59a75583d4bb464618d3c4c629, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1464766434}
   m_SourcePrefab: {fileID: 100100000, guid: b1484b59a75583d4bb464618d3c4c629, type: 3}
 --- !u!4 &1464766429 stripped
 Transform:
@@ -27533,6 +27594,21 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 7202875737181768710, guid: b1484b59a75583d4bb464618d3c4c629, type: 3}
   m_PrefabInstance: {fileID: 1464766428}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1464766434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753090931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5493cb7bf9b2a64e81c241f8aa360b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ghosts
+  animator: {fileID: 1464766433}
+  state: Normal
+  manager: {fileID: 218776547}
 --- !u!1 &1466428619 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2942143130210091638, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -28089,6 +28165,21 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5958939859665177170, guid: 9c6b731890be54049b9cf97035a218d5, type: 3}
   m_PrefabInstance: {fileID: 959225856}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1526246722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526246717}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5493cb7bf9b2a64e81c241f8aa360b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Ghosts
+  animator: {fileID: 1526246721}
+  state: Normal
+  manager: {fileID: 218776547}
 --- !u!1 &1528516409 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2246959280864095454, guid: 6b90ed863a0e1fe4aa305e73301a4db7, type: 3}
@@ -30713,7 +30804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   Intro: {fileID: 1859081283}
-  Ghost_Normal: {fileID: 1859081282}
+  ghostNormal: {fileID: 1859081282}
   duration: 3
 --- !u!4 &1859081285
 Transform:

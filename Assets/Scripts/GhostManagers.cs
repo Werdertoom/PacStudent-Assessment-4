@@ -4,73 +4,89 @@ using TMPro;
 
 public class GhostManagers : MonoBehaviour
 {
-    public Animator[] ghosts;
+    public Ghosts[] ghosts;
     public TMP_Text scaredTimer;
     public AudioSource musicSource;
     public AudioClip normalClip;
     public AudioClip scaredClip;
-    
-    private Coroutine scaredRoutine;
+
+    public static string currentState = "Normal"; // what a revived ghost should become
+    private Coroutine routine;
+
+    public void StartScared()
+    {
+        if (routine != null) StopCoroutine(routine);
+        routine = StartCoroutine(ScaredRoutine());
+    }
 
     IEnumerator ScaredRoutine()
     {
-        SetAll("Scared");
-        Playmusic(scaredClip);
+        SetAll("Scared", scaredClip);
         scaredTimer.gameObject.SetActive(true);
 
         float timeLeft = 10f;
-        bool recovering = false;
-
         while (timeLeft > 0f)
         {
             timeLeft -= Time.deltaTime;
             scaredTimer.text = Mathf.CeilToInt(timeLeft).ToString();
-
-            if (!recovering && timeLeft <= 3f)
+            if (timeLeft <= 3f && currentState != "Recovery")
             {
-                recovering = true;
-                SetAll("Recovery");
+                SetAll("Recovery", scaredClip);
             }
+
             yield return null;
         }
-        SetAll("Normal");
-        Playmusic(normalClip);
+
+        SetAll("Normal", normalClip);
         scaredTimer.gameObject.SetActive(false);
-        scaredRoutine = null;
     }
 
-    void SetAll(string statename)
+    public AudioClip deadClip;
+
+    public void UpdateMusic()
     {
-        foreach (Animator ghost in ghosts)
+        bool anyDead = false;
+        foreach (Ghosts g in ghosts)
         {
-            ghost.Play(statename);
+            if (g.state == "Dead")
+            {
+                anyDead = true;
+            }
         }
-    }
 
-    void Playmusic(AudioClip clip)
-    {
-        musicSource.clip = clip;
+        AudioClip wanted = normalClip;
+        if (anyDead)
+        {
+            wanted = deadClip;
+        }
+        else if (currentState == "Scared"|| currentState == "Recovery")
+        {
+            wanted = scaredClip;
+        }
+
+        if (musicSource.clip == wanted && musicSource.isPlaying) return;
+        musicSource.clip = wanted;
         musicSource.loop = true;
         musicSource.Play();
-    }
-    public void StartScared()
+
+    } 
+
+    void SetAll(string state, AudioClip music)
     {
-        if (scaredRoutine != null)
+        currentState = state;
+        foreach (Ghosts g in ghosts)
         {
-            StopCoroutine(scaredRoutine);
+            if (g.state != "Dead") g.SetState(state);   
         }
-
-        scaredRoutine = StartCoroutine(ScaredRoutine());
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+       UpdateMusic();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ResetAll()
     {
-        
+        StopAllCoroutines();
+        scaredTimer.gameObject.SetActive(false);
+        currentState = "Normal";
+        foreach (Ghosts g in ghosts) g.ResetGhosts();
+        SetAll("Normal", normalClip);
     }
 }

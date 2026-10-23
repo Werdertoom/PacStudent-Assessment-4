@@ -32,6 +32,7 @@ public class PacStudentController : MonoBehaviour
     public RoundManager roundManager;
     private int pelletsLeft;
     public GhostManagers ghostManager;
+    public AudioClip ghostEatClip;
 
     public int[,] quadrantMap =
     {
@@ -98,10 +99,15 @@ public class PacStudentController : MonoBehaviour
         animator.SetInteger("Direction", 0);
         animator.SetBool("Ismoving", false);
         isDead = false;
+        ghostManager.ResetAll();
     }
     
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (!RoundManager.gameRunning)
+        {
+            return;
+        }
         if (other.CompareTag("Pellet"))
             {
                 score += 10;
@@ -137,7 +143,19 @@ public class PacStudentController : MonoBehaviour
 
         if (other.CompareTag("Ghost") && !isDead)
         {
-            StartCoroutine(Die());
+            Ghosts ghost = other.GetComponent<Ghosts>();
+            if (ghost.state == "Normal")
+            {
+                StartCoroutine(Die());
+            }
+            else if (ghost.state != "dead")
+            {
+                score += 300;
+                scoreText.text = score.ToString("D6");
+                audiosource.PlayOneShot(ghostEatClip);
+                ghost.Eaten();
+            }
+            
         }
     }
     private Vector3 currentInput;

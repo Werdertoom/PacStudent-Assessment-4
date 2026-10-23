@@ -17,6 +17,7 @@ public class RoundManager : MonoBehaviour
     private float timer = 0;
     private bool isGameover = false;
     public Button exitButton;
+    public AudioManager  audioManager;
 
     IEnumerator GameOverRoutine(int finalScore)
     {
@@ -47,6 +48,7 @@ public class RoundManager : MonoBehaviour
     IEnumerator Countdown()
     {
         gameRunning = false;
+        audioManager.introMusic();
         block.SetActive(true);
         countdownText.gameObject.SetActive(true);
         
@@ -63,6 +65,7 @@ public class RoundManager : MonoBehaviour
         countdownText.gameObject.SetActive(false);
         block.SetActive(false);
         gameRunning = true;
+        audioManager.normalMusic();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
